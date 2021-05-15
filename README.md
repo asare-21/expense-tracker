@@ -10,8 +10,12 @@
 
 ## Shots from the app
 
-![flutter_01](https://user-images.githubusercontent.com/52238457/118379927-e764d400-b5cd-11eb-91f4-9c9ab8e6eb98.png)
-![flutter_02](https://user-images.githubusercontent.com/52238457/118379929-ea5fc480-b5cd-11eb-902d-5ea5bcfd5557.png)
-![flutter_03](https://user-images.githubusercontent.com/52238457/118379930-eb90f180-b5cd-11eb-98ba-de94dc0e6084.png)
-![flutter_04](https://user-images.githubusercontent.com/52238457/118379939-ef247880-b5cd-11eb-84c1-5476bdbd48aa.png)
-![flutter_05](https://user-images.githubusercontent.com/52238457/118379941-f055a580-b5cd-11eb-85d1-1d890a58abf7.png)
+### 1. ![flutter_01](https://user-images.githubusercontent.com/52238457/118380076-d8325600-b5ce-11eb-8854-d4183c040235.png)
+
+### 2. ![flutter_02](https://user-images.githubusercontent.com/52238457/118380079-d9fc1980-b5ce-11eb-87a9-5dd1ce7a6309.png)
+
+### 3. ![flutter_03](https://user-images.githubusercontent.com/52238457/118380080-db2d4680-b5ce-11eb-8a59-4b6b62347e76.png)
+
+### 4. ![flutter_04](https://user-images.githubusercontent.com/52238457/118380081-dc5e7380-b5ce-11eb-8d1e-b63b04434731.png)
+
+### 5. ![flutter_05](https://user-images.githubusercontent.com/52238457/118380082-dd8fa080-b5ce-11eb-9e43-f824eb7ab272.png)
