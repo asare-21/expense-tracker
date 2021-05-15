@@ -1,6 +1,7 @@
 import 'package:expense_tracker/pages/homepage.dart';
 import 'package:expense_tracker/provider/expenseProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ import 'package:splashscreen/splashscreen.dart';
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('storage');
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   if (await Hive.box('storage').get('data') == null) {
     await Hive.box('storage').put('data', []);
   }
