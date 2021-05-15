@@ -1,16 +1,9 @@
-# expense_tracker
-
-A new Flutter project.
+# Expense Tracker
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### 1. Open The Drawer and Start a new Expense Track
 
-A few resources to get you started if this is your first Flutter project:
+### 2. Long-press the tab below the graph to add a new entry
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 3. Tap the tab to view the data for the selected Expense track
