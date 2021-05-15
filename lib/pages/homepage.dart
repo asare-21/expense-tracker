@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
                         },
                       )
                     ],
+                    title: Text('New Expense Track'),
                     content: Container(
                       height: 200,
                       child: Column(
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           ListTile(
-                            title: Text('Limit'),
+                            title: Text('Shopping Limit'),
                             subtitle: TextField(
                               controller: limit,
                               keyboardType: TextInputType.number,
@@ -158,6 +159,7 @@ class _HomePageState extends State<HomePage> {
                                                 },
                                               )
                                             ],
+                                            title: Text('New Entry'),
                                             content: Container(
                                               height: 200,
                                               child: Column(
