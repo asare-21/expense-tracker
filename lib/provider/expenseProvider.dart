@@ -10,7 +10,6 @@ var box = Hive.openBox('storage');
 class ExpenseProvider with ChangeNotifier {
   get returnExpense {
     List data = Hive.box('storage').get('data');
-    print(data);
     _expenseN.clear();
     data.forEach((element) {
       _expenseN.add(ExpenseModel(

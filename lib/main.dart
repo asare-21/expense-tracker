@@ -27,17 +27,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expense Tracker',
       debugShowCheckedModeBanner: false,
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       theme: ThemeData(
         backgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
-        accentColor: Colors.blue[900],
+        accentColor: Colors.blueGrey[900],
         appBarTheme: AppBarTheme(
           elevation: 1,
           backgroundColor: Colors.white,
           textTheme: TextTheme(
               headline6: TextStyle(color: Colors.black, fontSize: 18)),
         ),
-        // primarySwatch: Colors.pink,
+        primarySwatch: Colors.blue,
       ),
       home: Splash(),
     );
@@ -50,7 +52,8 @@ class Splash extends StatelessWidget {
     return SplashScreen(
       title: Text(
         'Expense Tracker',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 30, color: Colors.black),
       ),
       backgroundColor: Colors.white,
       seconds: 3,
