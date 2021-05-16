@@ -87,7 +87,9 @@ class _ChartState extends State<Chart> {
           show: true,
           border: Border.all(color: const Color(0xff37434d), width: 1)),
       minX: 0,
-      maxX: 11,
+      maxX: widget.expenseModel.entries.length > 10
+          ? widget.expenseModel.entries.length + 1.0
+          : 11,
       minY: 0,
       maxY: widget.expenseModel.limit,
       lineBarsData: [
