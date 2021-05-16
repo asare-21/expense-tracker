@@ -1,5 +1,6 @@
 import 'package:expense_tracker/model/expenseModel.dart';
 import 'package:expense_tracker/pages/chart.dart';
+import 'package:expense_tracker/pages/instructionpage.dart';
 import 'package:expense_tracker/provider/expenseProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,6 +72,17 @@ class _HomePageState extends State<HomePage> {
               title: Text('New Track'),
               leading: Icon(Icons.add),
               subtitle: Text('Start a new expense track'),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => InstructionPage(),
+                ));
+              },
+              title: Text('Instructions'),
+              subtitle: Text('Learn how to the Expense Tracker'),
+              leading: Icon(Icons.directions),
             )
           ],
         ),
