@@ -37,9 +37,9 @@ class _HomePageState extends State<HomePage> {
                   context: context,
                   builder: (context) => Platform.isIOS
                       ? CupertinoAlertDialog(
-                          title: Text('New Entry'),
+                          title: Text('New Expnese Entry'),
                           content: Container(
-                            height: 200,
+                            height: 100,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                 ? CupertinoAlertDialog(
                     title: Text('New Entry'),
                     content: Container(
-                      height: 200,
+                      height: 100,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

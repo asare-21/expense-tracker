@@ -45,7 +45,21 @@ class InstructionPage extends StatelessWidget {
               'Tap any tab to select and view expenses under it',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-          )
+          ),
+          ListTile(
+            leading: Text('5.'),
+            title: Text(
+              'Swipe from the left to right to delete an expense entry',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          ListTile(
+            leading: Text('6.'),
+            title: Text(
+              'Longpress on an expense track to delete it',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
         ],
       ),
     );
