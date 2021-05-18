@@ -12,6 +12,7 @@ var box = Hive.openBox('storage');
 
 class ExpenseProvider with ChangeNotifier {
   get returnExpense {
+    // Returns saced expense tracks with their respective entries
     List data = Hive.box('storage').get('data');
     _expenseN.clear();
     data.forEach((element) {
@@ -26,6 +27,7 @@ class ExpenseProvider with ChangeNotifier {
   }
 
   void addExpense({title, limit}) {
+    // Create a new expense track
     _expenseN.add(
         ExpenseModel(title: title, limit: double.parse(limit), entries: []));
     updateStorage();
@@ -33,6 +35,7 @@ class ExpenseProvider with ChangeNotifier {
   }
 
   void addExpenseEntry({title, amount, index}) {
+    // add an expense entry to an expense track
     _expenseN[index]
         .entries
         .add(ExpenseEntry(title: title, amount: double.parse(amount)));
@@ -42,6 +45,7 @@ class ExpenseProvider with ChangeNotifier {
   }
 
   double computerMoney({index}) {
+    // compute the total money spent
     double amount = 0;
     _expenseN[index].entries.forEach((element) {
       amount += (element.amount);
@@ -63,7 +67,13 @@ class ExpenseProvider with ChangeNotifier {
     await Hive.box('storage').put('data', data);
   }
 
-  void removeExpenseTrack({int index, subIndex}) {
+  void removeExpenseTrack({int index}) {
+    _expenseN.removeAt(index);
+    updateStorage();
+    notifyListeners();
+  }
+
+  void removeExpenseEntry({int index, subIndex}) {
     _expenseN[index].entries.removeAt(subIndex);
     updateStorage();
     notifyListeners();
