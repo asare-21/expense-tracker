@@ -80,12 +80,7 @@ class ExpenseProvider with ChangeNotifier {
   }
 
   void showNotification(int index) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails('repeating channel id',
-            'repeating channel name', 'repeating description');
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-    );
+    const NotificationDetails platformChannelSpecifics = NotificationDetails();
     double moneySpent = 0;
     _expenseN[index].entries.forEach((entry) {
       moneySpent += entry.amount;

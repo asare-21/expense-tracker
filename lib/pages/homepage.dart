@@ -151,143 +151,151 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        backgroundColor: Colors.black,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => Platform.isIOS
-                ? CupertinoAlertDialog(
-                    title: Text('New Entry'),
-                    content: Container(
-                      height: 100,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: CupertinoTextField(
-                              enableSuggestions: true,
-                              controller: title,
-                              placeholder: 'What did you buy?',
+      floatingActionButton: _expense.length == 0
+          ? Container()
+          : FloatingActionButton(
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              backgroundColor: Colors.black,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => Platform.isIOS
+                      ? CupertinoAlertDialog(
+                          title: Text('New Entry'),
+                          content: Container(
+                            height: 100,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: CupertinoTextField(
+                                    enableSuggestions: true,
+                                    controller: title,
+                                    placeholder: 'What did you buy?',
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  child: CupertinoTextField(
+                                    enableSuggestions: true,
+                                    controller: limit,
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                            decimal: true, signed: true),
+                                    placeholder: 'Amount Spent',
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                          SizedBox(
-                            height: 10,
+                          actions: [
+                            TextButton(
+                              child: Text('Save'),
+                              onPressed: () {
+                                var pattern = RegExp(r'^[0-9]\d*(\.\d+)?$');
+                                if (!pattern.hasMatch(limit.text)) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          backgroundColor:
+                                              Theme.of(context).errorColor,
+                                          content: Text(
+                                              'Only numerical values allowed')));
+                                } else {
+                                  if (_expense[index1].limit >
+                                      double.parse(limit.text)) {
+                                    Provider.of<ExpenseProvider>(context,
+                                            listen: false)
+                                        .addExpenseEntry(
+                                            index: index1,
+                                            amount: limit.text,
+                                            title: title.text);
+                                    Navigator.pop(context);
+                                    limit.clear();
+                                    title.clear();
+                                  } else {
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Text(
+                                          'Sorry, This can\'t be added. It\'s above your set Limit.'),
+                                    ));
+                                  }
+                                }
+                              },
+                            )
+                          ],
+                        )
+                      : AlertDialog(
+                          actions: [
+                            TextButton(
+                              child: Text('Save'),
+                              onPressed: () {
+                                var pattern = RegExp(r'^[0-9]\d*(\.\d+)?$');
+                                if (!pattern.hasMatch(limit.text)) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          backgroundColor:
+                                              Theme.of(context).errorColor,
+                                          content: Text(
+                                              'Only numerical values allowed')));
+                                } else {
+                                  if (_expense[index1].limit >
+                                      double.parse(limit.text)) {
+                                    Provider.of<ExpenseProvider>(context,
+                                            listen: false)
+                                        .addExpenseEntry(
+                                            index: index1,
+                                            amount: limit.text,
+                                            title: title.text);
+                                    Navigator.pop(context);
+                                    limit.clear();
+                                    title.clear();
+                                  } else {
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Text(
+                                          'Sorry, This can\'t be added. It\'s above your set Limit.'),
+                                    ));
+                                  }
+                                }
+                              },
+                            )
+                          ],
+                          title: Text('New Entry'),
+                          content: Container(
+                            height: 200,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Text('Title'),
+                                  subtitle: TextField(
+                                    controller: title,
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text('Amount Spent'),
+                                  subtitle: TextFormField(
+                                    controller: limit,
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                            decimal: true, signed: true),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          Container(
-                            child: CupertinoTextField(
-                              enableSuggestions: true,
-                              controller: limit,
-                              keyboardType: TextInputType.numberWithOptions(
-                                  decimal: true, signed: true),
-                              placeholder: 'Amount Spent',
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        child: Text('Save'),
-                        onPressed: () {
-                          var pattern = RegExp(r'^[0-9]\d*(\.\d+)?$');
-                          if (!pattern.hasMatch(limit.text)) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                backgroundColor: Theme.of(context).errorColor,
-                                content:
-                                    Text('Only numerical values allowed')));
-                          } else {
-                            if (_expense[index1].limit >
-                                double.parse(limit.text)) {
-                              Provider.of<ExpenseProvider>(context,
-                                      listen: false)
-                                  .addExpenseEntry(
-                                      index: index1,
-                                      amount: limit.text,
-                                      title: title.text);
-                              Navigator.pop(context);
-                              limit.clear();
-                              title.clear();
-                            } else {
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                    'Sorry, This can\'t be added. It\'s above your set Limit.'),
-                              ));
-                            }
-                          }
-                        },
-                      )
-                    ],
-                  )
-                : AlertDialog(
-                    actions: [
-                      TextButton(
-                        child: Text('Save'),
-                        onPressed: () {
-                          var pattern = RegExp(r'^[0-9]\d*(\.\d+)?$');
-                          if (!pattern.hasMatch(limit.text)) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                backgroundColor: Theme.of(context).errorColor,
-                                content:
-                                    Text('Only numerical values allowed')));
-                          } else {
-                            if (_expense[index1].limit >
-                                double.parse(limit.text)) {
-                              Provider.of<ExpenseProvider>(context,
-                                      listen: false)
-                                  .addExpenseEntry(
-                                      index: index1,
-                                      amount: limit.text,
-                                      title: title.text);
-                              Navigator.pop(context);
-                              limit.clear();
-                              title.clear();
-                            } else {
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                    'Sorry, This can\'t be added. It\'s above your set Limit.'),
-                              ));
-                            }
-                          }
-                        },
-                      )
-                    ],
-                    title: Text('New Entry'),
-                    content: Container(
-                      height: 200,
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Text('Title'),
-                            subtitle: TextField(
-                              controller: title,
-                            ),
-                          ),
-                          ListTile(
-                            title: Text('Amount Spent'),
-                            subtitle: TextFormField(
-                              controller: limit,
-                              keyboardType: TextInputType.numberWithOptions(
-                                  decimal: true, signed: true),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-          );
-        },
-      ),
+                        ),
+                );
+              },
+            ),
       appBar: AppBar(
         leading: Builder(builder: (context) {
           return IconButton(
