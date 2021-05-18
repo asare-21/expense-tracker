@@ -15,7 +15,7 @@ class _ChartState extends State<Chart> {
     const Color(0xff02d39a),
   ];
 
-  var count = 1;
+  var count = 0;
 
   @override
   Widget build(BuildContext context) {

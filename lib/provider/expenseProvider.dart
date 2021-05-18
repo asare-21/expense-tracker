@@ -1,6 +1,9 @@
 import 'package:expense_tracker/model/expenseModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
+
+import '../main.dart';
 
 // List<ExpenseModel> _expense = [];
 List<ExpenseModel> _expenseN = [];
@@ -33,6 +36,7 @@ class ExpenseProvider with ChangeNotifier {
     _expenseN[index]
         .entries
         .add(ExpenseEntry(title: title, amount: double.parse(amount)));
+    showNotification(index);
     updateStorage();
     notifyListeners();
   }
@@ -57,5 +61,39 @@ class ExpenseProvider with ChangeNotifier {
       });
     });
     await Hive.box('storage').put('data', data);
+  }
+
+  void removeExpenseTrack({int index, subIndex}) {
+    _expenseN[index].entries.removeAt(subIndex);
+    updateStorage();
+    notifyListeners();
+  }
+
+  void showNotification(int index) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails('repeating channel id',
+            'repeating channel name', 'repeating description');
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+    );
+    double moneySpent = 0;
+    _expenseN[index].entries.forEach((entry) {
+      moneySpent += entry.amount;
+    });
+    if (moneySpent > (_expenseN[index].limit * .8)) {
+      await flutterLocalNotificationsPlugin.show(
+          DateTime.now().millisecond,
+          'Expense Tracker',
+          'Your are approaching your spending limit. You have spent GHS $moneySpent.',
+          platformChannelSpecifics);
+    }
+    if (moneySpent == _expenseN[index].limit ||
+        moneySpent >= _expenseN[index].limit) {
+      await flutterLocalNotificationsPlugin.show(
+          DateTime.now().millisecond,
+          'Expense Tracker',
+          'You have exceeded your spending limit. You have spent GHS $moneySpent. Your spending limit is ${_expenseN[index].limit}',
+          platformChannelSpecifics);
+    }
   }
 }

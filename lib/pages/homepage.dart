@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:expense_tracker/model/expenseModel.dart';
 import 'package:expense_tracker/pages/chart.dart';
 import 'package:expense_tracker/pages/instructionpage.dart';
 import 'package:expense_tracker/provider/expenseProvider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,41 +35,102 @@ class _HomePageState extends State<HomePage> {
                 Navigator.pop(context);
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    actions: [
-                      TextButton(
-                        child: Text('Save'),
-                        onPressed: () {
-                          Provider.of<ExpenseProvider>(context, listen: false)
-                              .addExpense(limit: limit.text, title: title.text);
-                          limit.clear();
-                          title.clear();
-                          Navigator.pop(context);
-                        },
-                      )
-                    ],
-                    title: Text('New Expense Track'),
-                    content: Container(
-                      height: 200,
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Text('Title'),
-                            subtitle: TextField(
-                              controller: title,
+                  builder: (context) => Platform.isIOS
+                      ? CupertinoAlertDialog(
+                          title: Text('New Entry'),
+                          content: Container(
+                            height: 200,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: CupertinoTextField(
+                                    enableSuggestions: true,
+                                    controller: title,
+                                    placeholder: 'Name this Expense track',
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  child: CupertinoTextField(
+                                    enableSuggestions: true,
+                                    controller: limit,
+                                    keyboardType:
+                                        TextInputType.numberWithOptions(
+                                            decimal: true, signed: true),
+                                    placeholder: 'What\'s your spending limit?',
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                          ListTile(
-                            title: Text('Shopping Limit'),
-                            subtitle: TextField(
-                              controller: limit,
-                              keyboardType: TextInputType.number,
+                          actions: [
+                            TextButton(
+                              child: Text('Save'),
+                              onPressed: () {
+                                var pattern = RegExp(r'^[0-9]\d*(\.\d+)?$');
+                                if (!pattern.hasMatch(limit.text)) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          backgroundColor:
+                                              Theme.of(context).errorColor,
+                                          content: Text(
+                                              'Only numerical values allowed')));
+                                } else {
+                                  Provider.of<ExpenseProvider>(context,
+                                          listen: false)
+                                      .addExpense(
+                                          limit: limit.text, title: title.text);
+                                  limit.clear();
+                                  title.clear();
+                                  Navigator.pop(context);
+                                }
+                              },
+                            )
+                          ],
+                        )
+                      : AlertDialog(
+                          actions: [
+                            TextButton(
+                              child: Text('Save'),
+                              onPressed: () {
+                                Provider.of<ExpenseProvider>(context,
+                                        listen: false)
+                                    .addExpense(
+                                        limit: limit.text, title: title.text);
+                                limit.clear();
+                                title.clear();
+                                Navigator.pop(context);
+                              },
+                            )
+                          ],
+                          title: Text('New Expense Track'),
+                          content: Container(
+                            height: 200,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Text('Title'),
+                                  subtitle: TextField(
+                                    controller: title,
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text('Shopping Limit'),
+                                  subtitle: TextField(
+                                    controller: limit,
+                                    keyboardType: Platform.isAndroid
+                                        ? TextInputType.number
+                                        : TextInputType.numberWithOptions(
+                                            decimal: true, signed: true),
+                                  ),
+                                )
+                              ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                          ),
+                        ),
                 );
               },
               title: Text('New Track'),
@@ -101,7 +165,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: _expense.length == 0
           ? Center(
-              child: Text('Nothingg to Show'),
+              child: Text('Nothing to Show'),
             )
           : Column(
               children: [
@@ -139,61 +203,187 @@ class _HomePageState extends State<HomePage> {
                                       onLongPress: () {
                                         showDialog(
                                           context: context,
-                                          builder: (context) => AlertDialog(
-                                            actions: [
-                                              TextButton(
-                                                child: Text('Save'),
-                                                onPressed: () {
-                                                  if (_expense[index1].limit >
-                                                      double.parse(
-                                                          limit.text)) {
-                                                    Provider.of<ExpenseProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .addExpenseEntry(
-                                                            index: index,
-                                                            amount: limit.text,
-                                                            title: title.text);
-                                                    Navigator.pop(context);
-                                                    limit.clear();
-                                                    title.clear();
-                                                  } else {
-                                                    Navigator.pop(context);
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(SnackBar(
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      content: Text(
-                                                          'Sorry, This can\'t be added. It\'s above your set Limit.'),
-                                                    ));
-                                                  }
-                                                },
-                                              )
-                                            ],
-                                            title: Text('New Entry'),
-                                            content: Container(
-                                              height: 200,
-                                              child: Column(
-                                                children: [
-                                                  ListTile(
-                                                    title: Text('Title'),
-                                                    subtitle: TextField(
-                                                      controller: title,
+                                          builder: (context) => Platform.isIOS
+                                              ? CupertinoAlertDialog(
+                                                  title: Text('New Entry'),
+                                                  content: Container(
+                                                    height: 200,
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Container(
+                                                          child:
+                                                              CupertinoTextField(
+                                                            enableSuggestions:
+                                                                true,
+                                                            controller: title,
+                                                            placeholder:
+                                                                'What did you buy?',
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Container(
+                                                          child:
+                                                              CupertinoTextField(
+                                                            enableSuggestions:
+                                                                true,
+                                                            controller: limit,
+                                                            keyboardType: TextInputType
+                                                                .numberWithOptions(
+                                                                    decimal:
+                                                                        true,
+                                                                    signed:
+                                                                        true),
+                                                            placeholder:
+                                                                'Amount Spent',
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
                                                   ),
-                                                  ListTile(
-                                                    title: Text('Amount Spent'),
-                                                    subtitle: TextField(
-                                                      controller: limit,
-                                                      keyboardType:
-                                                          TextInputType.number,
+                                                  actions: [
+                                                    TextButton(
+                                                      child: Text('Save'),
+                                                      onPressed: () {
+                                                        var pattern = RegExp(
+                                                            r'^[0-9]\d*(\.\d+)?$');
+                                                        if (!pattern.hasMatch(
+                                                            limit.text)) {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(SnackBar(
+                                                                  backgroundColor:
+                                                                      Theme.of(
+                                                                              context)
+                                                                          .errorColor,
+                                                                  content: Text(
+                                                                      'Only numerical values allowed')));
+                                                        } else {
+                                                          if (_expense[index1]
+                                                                  .limit >
+                                                              double.parse(
+                                                                  limit.text)) {
+                                                            Provider.of<ExpenseProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .addExpenseEntry(
+                                                                    index:
+                                                                        index,
+                                                                    amount: limit
+                                                                        .text,
+                                                                    title: title
+                                                                        .text);
+                                                            Navigator.pop(
+                                                                context);
+                                                            limit.clear();
+                                                            title.clear();
+                                                          } else {
+                                                            Navigator.pop(
+                                                                context);
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                                    SnackBar(
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              content: Text(
+                                                                  'Sorry, This can\'t be added. It\'s above your set Limit.'),
+                                                            ));
+                                                          }
+                                                        }
+                                                      },
+                                                    )
+                                                  ],
+                                                )
+                                              : AlertDialog(
+                                                  actions: [
+                                                    TextButton(
+                                                      child: Text('Save'),
+                                                      onPressed: () {
+                                                        var pattern = RegExp(
+                                                            r'^[0-9]\d*(\.\d+)?$');
+                                                        if (!pattern.hasMatch(
+                                                            limit.text)) {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(SnackBar(
+                                                                  backgroundColor:
+                                                                      Theme.of(
+                                                                              context)
+                                                                          .errorColor,
+                                                                  content: Text(
+                                                                      'Only numerical values allowed')));
+                                                        } else {
+                                                          if (_expense[index1]
+                                                                  .limit >
+                                                              double.parse(
+                                                                  limit.text)) {
+                                                            Provider.of<ExpenseProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .addExpenseEntry(
+                                                                    index:
+                                                                        index,
+                                                                    amount: limit
+                                                                        .text,
+                                                                    title: title
+                                                                        .text);
+                                                            Navigator.pop(
+                                                                context);
+                                                            limit.clear();
+                                                            title.clear();
+                                                          } else {
+                                                            Navigator.pop(
+                                                                context);
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                                    SnackBar(
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              content: Text(
+                                                                  'Sorry, This can\'t be added. It\'s above your set Limit.'),
+                                                            ));
+                                                          }
+                                                        }
+                                                      },
+                                                    )
+                                                  ],
+                                                  title: Text('New Entry'),
+                                                  content: Container(
+                                                    height: 200,
+                                                    child: Column(
+                                                      children: [
+                                                        ListTile(
+                                                          title: Text('Title'),
+                                                          subtitle: TextField(
+                                                            controller: title,
+                                                          ),
+                                                        ),
+                                                        ListTile(
+                                                          title: Text(
+                                                              'Amount Spent'),
+                                                          subtitle:
+                                                              TextFormField(
+                                                            controller: limit,
+                                                            keyboardType: TextInputType
+                                                                .numberWithOptions(
+                                                                    decimal:
+                                                                        true,
+                                                                    signed:
+                                                                        true),
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                                  ),
+                                                ),
                                         );
                                       },
                                       child: Text(_expense[index].title),
@@ -274,13 +464,23 @@ class _HomePageState extends State<HomePage> {
                                           itemCount:
                                               _expense[index1].entries.length,
                                           itemBuilder: (context, index) =>
-                                              ListTile(
-                                            leading: Icon(Icons.money),
-                                            title: Text(_expense[index1]
-                                                .entries[index]
-                                                .title),
-                                            trailing: Text(
-                                                'GHS ${_expense[index1].entries[index].amount}'),
+                                              Dismissible(
+                                            key: Key(DateTime.now().toString()),
+                                            onDismissed: (direction) =>
+                                                Provider.of<ExpenseProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .removeExpenseTrack(
+                                                        index: index1,
+                                                        subIndex: index),
+                                            child: ListTile(
+                                              leading: Icon(Icons.money),
+                                              title: Text(_expense[index1]
+                                                  .entries[index]
+                                                  .title),
+                                              trailing: Text(
+                                                  'GHS ${_expense[index1].entries[index].amount}'),
+                                            ),
                                           ),
                                         ))
                             ],
